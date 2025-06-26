@@ -1,0 +1,60 @@
+<div class="container p-4">
+  <h2>Liste des idées</h2>
+
+  <div class="mb-3">
+    <input [(ngModel)]="searchKeyword" placeholder="Recherche par titre" class="form-control mb-2" />
+    <button (click)="searchByTitle()" class="btn btn-success">Rechercher</button>
+  </div>
+
+  <div class="mb-3">
+    <select [(ngModel)]="searchStatus" class="form-select">
+      <option value="">-- Sélectionnez un statut --</option>
+      <option value="PROPOSED">PROPOSED</option>
+      <option value="ACCEPTED">ACCEPTED</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="COMPLETED">COMPLETED</option>
+    </select>
+    <button (click)="searchByStatus()" class="btn btn-success mt-2">Rechercher par statut</button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Statut</th>
+        <th>Likes</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let idea of ideas">
+        <td><input [(ngModel)]="idea.title" class="form-control" /></td>
+        <td>
+          <select [(ngModel)]="idea.status" class="form-select">
+            <option value="PROPOSED">PROPOSED</option>
+            <option value="ACCEPTED">ACCEPTED</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="COMPLETED">COMPLETED</option>
+          </select>
+        </td>
+        <td>{{ idea.likes }}</td>
+        <td>
+          <button (click)="updateIdea(idea)" class="btn btn-primary btn-sm">Modifier</button>
+          <button (click)="deleteIdea(idea.id)" class="btn btn-danger btn-sm">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Ajouter une idée</h3>
+  <div class="mb-3">
+    <input [(ngModel)]="newIdea.title" placeholder="Titre" class="form-control mb-2" />
+    <select [(ngModel)]="newIdea.status" class="form-select mb-2">
+      <option value="PROPOSED">PROPOSED</option>
+      <option value="ACCEPTED">ACCEPTED</option>
+      <option value="IN_PROGRESS">IN_PROGRESS</option>
+      <option value="COMPLETED">COMPLETED</option>
+    </select>
+    <button (click)="addIdea()" class="btn btn-success">Ajouter</button>
+  </div>
+</div>

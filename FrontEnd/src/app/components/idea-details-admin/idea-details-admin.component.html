@@ -1,0 +1,25 @@
+<div class="container mt-4" *ngIf="idea; else errorTpl">
+  <h2>Détails de l'idée</h2>
+  <p><strong>Titre :</strong> {{ idea.title }}</p>
+  <p><strong>Statut :</strong> {{ idea.status }}</p>
+  <p><strong>Date de soumission :</strong> {{ idea.submissionDate | date:'medium' }}</p>
+  <p><strong>Likes :</strong> {{ idea.likes }}</p>
+
+  <p *ngIf="idea.videoUrl">
+    <strong>Vidéo :</strong>
+    <a [href]="idea.videoUrl" target="_blank">Voir la vidéo</a>
+  </p>
+
+  <p *ngIf="idea.reportFileName">
+    <strong>Rapport :</strong>
+    <button class="btn btn-outline-primary btn-sm" (click)="downloadReport()">Télécharger le rapport</button>
+  </p>
+
+  <a class="btn btn-secondary mt-3" routerLink="/admin/ideas">Retour</a>
+</div>
+
+<ng-template #errorTpl>
+  <div class="alert alert-danger mt-4">{{ errorMessage }}</div>
+  <a class="btn btn-secondary mt-3" routerLink="/admin/ideas">Retour</a>
+</ng-template>
+

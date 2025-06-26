@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+
+<div class="container p-4 mt-4">
+  <h3>Postuler une idée</h3>
+  <input [(ngModel)]="newIdea.title" placeholder="Titre de l'idée" class="form-control mb-2" />
+<div class="mb-3">
+  <label class="form-label">Lien de la vidéo</label>
+  <input type="url" class="form-control" [(ngModel)]="newIdea.videoUrl" name="videoUrl" placeholder="https://youtube.com/..." />
+</div>
+  <div class="mb-2">
+    <label class="btn btn-success">
+      Ajouter un fichier
+      <input type="file" (change)="onFileSelected($event)" hidden>
+    </label>
+  </div>
+  <div>
+    <button class="btn btn-success" (click)="submitIdea()">Soumettre</button>
+  </div>
+  <div *ngIf="message" class="alert alert-success mt-3">{{ message }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+</div>

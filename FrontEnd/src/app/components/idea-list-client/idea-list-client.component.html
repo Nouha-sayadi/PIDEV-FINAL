@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+
+  <!-- Header + bouton -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-success">
+      <i class="bi bi-lightbulb-fill"></i> Idées Proposées
+    </h2>
+    <button class="btn btn-outline-success" (click)="goToSubmitIdea()">
+      <i class="bi bi-plus-circle"></i> Share with us your idea
+    </button>
+  </div>
+
+  <!-- Champ de recherche -->
+  <div class="mb-4">
+    <input  
+      type="text" 
+      class="form-control" 
+      placeholder="Rechercher une idée par titre..." 
+      [(ngModel)]="searchTerm"
+      (input)="filterIdeas()"
+    >
+  </div>
+
+  <!-- Loading + error -->
+  <div *ngIf="loading" class="text-center text-muted">Chargement...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <!-- Liste des idées -->
+  <div class="row">
+    <div *ngFor="let idea of filteredIdeas" class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100 border-success">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title text-success">
+            <i class="bi bi-check-circle-fill"></i> {{ idea.title }}
+          </h5>
+<div *ngIf="idea.videoUrl">
+  <iframe 
+    [src]="sanitizeUrl(idea.videoUrl)" 
+    width="100%" 
+    height="200" 
+    frameborder="0" 
+    allowfullscreen>
+  </iframe>
+</div>
+
+ <p *ngIf="idea.reportFileName">
+    Rapport : {{ idea.reportFileName }}
+    <button class="btn btn-sm btn-outline-primary" (click)="downloadReport(idea)">Télécharger</button>
+  </p>
+          <p><strong>Likes :</strong> {{ idea.likes }}</p>
+          <p><strong>Date :</strong> {{ idea.submissionDate | date:'medium' }}</p>
+          <span class="badge bg-success mb-2">{{ idea.status }}</span>
+
+          <div class="mt-auto">
+            <button class="btn btn-outline-danger btn-sm me-2" (click)="likeIdea(idea)">
+              <i class="bi bi-heart-fill"></i> Voter
+            </button>
+          <button class="btn btn-primary" [routerLink]="['/ideas', idea.id, 'discussion']">Discuter</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && filteredIdeas.length === 0" class="text-center text-muted">
+    Aucune idée ne correspond à votre recherche.
+  </div>
+
+</div>

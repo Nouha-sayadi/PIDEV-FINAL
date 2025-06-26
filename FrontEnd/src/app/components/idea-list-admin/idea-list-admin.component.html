@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <h2>Gestion des idées (Admin)</h2>
+
+  <div *ngIf="loading" class="text-center">Chargement...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <table class="table table-striped mt-3" *ngIf="!loading && ideas.length > 0">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Statut</th>
+        <th>Date de soumission</th>
+        <th>Likes</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let idea of ideas">
+        <td>{{ idea.title }}</td>
+        <td>
+          <span 
+            class="badge" 
+            [ngClass]="{
+              'bg-secondary': idea.status === 'PROPOSED',
+              'bg-success': idea.status === 'ACCEPTED',
+              'bg-info': idea.status === 'IN_PROGRESS',
+              'bg-dark': idea.status === 'COMPLETED',
+              'bg-danger': idea.status === 'REJECTED'
+            }"
+          >
+            {{ idea.status }}
+          </span>
+        </td>
+        <td>{{ idea.submissionDate | date:'medium' }}</td>
+        <td>{{ idea.likes }}</td>
+        <td>
+         <button 
+          class="btn btn-success btn-sm me-2"
+          [disabled]="updatingId === idea.id || idea.status === 'ACCEPTED'"
+            (click)="updateStatus(idea, 'ACCEPTED')"
+          >
+            Accepter
+        </button>
+        <button 
+           class="btn btn-danger btn-sm"
+          [disabled]="updatingId === idea.id || idea.status === 'REJECTED'"
+          (click)="updateStatus(idea, 'REJECTED')"
+          >
+            Rejeter
+          </button>
+          <button 
+             class="btn btn-warning btn-sm me-1"
+             [routerLink]="['/admin/idea', idea.id]"
+          >
+             Détails
+          </button>
+
+          <button 
+            class="btn btn-outline-danger btn-sm"
+            (click)="deleteIdea(idea)"
+          >
+            Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && ideas.length === 0" class="text-center">
+    Aucune idée trouvée.
+  </div>
+</div>
