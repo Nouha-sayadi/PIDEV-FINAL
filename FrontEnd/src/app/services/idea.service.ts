@@ -67,4 +67,9 @@ getDiscussions(ideaId: number): Observable<Discussion[]> {
     return this.http.post(`http://localhost:8081/api/ideas/${id}/discussions`, { message }, { headers });
   }
 
+  getStatistics() {
+  return this.http.get<any>('http://localhost:8081/api/ideas/statistics');
+}
+
+
 }

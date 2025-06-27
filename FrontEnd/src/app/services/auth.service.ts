@@ -1,7 +1,9 @@
 // src/app/services/auth.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,23 +11,34 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:8081/user';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
- login(credentials: any) {
-  return this.http.post(`${this.apiUrl}/auth`, credentials).pipe(
-    tap((response: any) => {
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('email', response.email);
-    })
-  );
-}
+  login(credentials: any) {
+    return this.http.post(`${this.apiUrl}/auth`, credentials).pipe(
+      tap((response: any) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('email', response.email);
 
+        const decoded = this.decodeJwt(response.token);
 
+        if (decoded.role === 'ADMIN') {
+          this.router.navigate(['/IdeaListAdmin']);
+        } else {
+          this.router.navigate(['/home']);
+        }
+      })
+    );
+  }
 
+  private decodeJwt(token: string): any {
+    const payload = token.split('.')[1];
+    const decodedPayload = atob(payload);
+    return JSON.parse(decodedPayload);
+  }
 
   getProfile(email: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/profile/${email}`);
@@ -47,7 +60,8 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
-   getToken(): string | null {
+
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 }

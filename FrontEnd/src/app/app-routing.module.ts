@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { CoursesComponent } from './components/courses/courses.component';
@@ -17,8 +18,14 @@ import { IdeaDetailsAdminComponent } from './components/idea-details-admin/idea-
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { DiscussionComponent } from './components/discussion/discussion.component';
+import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.component';
+import { AdminStatisticsComponent } from './components/admin-statistics/admin-statistics.component';
+
+// ✅ Import your AuthGuard
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+  // Public / client routes
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'courses', component: CoursesComponent },
@@ -29,21 +36,22 @@ const routes: Routes = [
   { path: 'Trainers', component: TrainersComponent },
   { path: 'post', component: PostComponent },
   { path: 'idea', component: IdeaComponent },
-  {path:'IdeaListAdmin', component:IdeaListAdminComponent},
-  {path:'IdeaListClient', component:IdeaListClientComponent},
-  {path:'submitIdea' , component:SubmitIdeaComponent},
-  { path: 'admin/idea/:id', component: IdeaDetailsAdminComponent },
+  { path: 'IdeaListClient', component: IdeaListClientComponent },
+  { path: 'submitIdea', component: SubmitIdeaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },  
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'discussion/:ideaId', component: DiscussionComponent },
-{ path: 'ideas/:id/discussion', component: DiscussionComponent }
+  { path: 'ideas/:id/discussion', component: DiscussionComponent },
+  { path: 'sideBar', component: AdminSidebarComponent },
 
-
+  { path: 'IdeaListAdmin', component: IdeaListAdminComponent, canActivate: [AuthGuard] },
+  { path: 'admin/idea/:id', component: IdeaDetailsAdminComponent, canActivate: [AuthGuard] },
+  { path: 'admin/statistic', component: AdminStatisticsComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

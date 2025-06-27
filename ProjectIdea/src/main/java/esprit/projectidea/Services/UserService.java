@@ -37,7 +37,7 @@ public class UserService {
         }
 
         //Role assignedRole = "ADMIN".equalsIgnoreCase(request.getUserType()) ? Role.ADMIN : Role.USER;
-        Role assignedRole =  Role.ADMIN ;
+        Role assignedRole =  Role.USER ;
 
         User.UserBuilder userBuilder = User.builder()
                 .firstName(request.getFirstName())

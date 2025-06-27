@@ -1,0 +1,13 @@
+app-admin-sidebar {
+  width: 220px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+.main-content {
+  margin-left: 220px;
+  padding: 20px;
+}

@@ -28,8 +28,6 @@ export class LoginComponent {
       this.authService.login(this.form.value).subscribe({
         next: (res: any) => {
           console.log('Connexion réussie', res);
-          localStorage.setItem('token', res.token);
-          this.router.navigate(['/home']);
         },
         error: (err) => {
           if (err.status === 401) {

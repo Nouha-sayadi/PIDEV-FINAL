@@ -36,7 +36,10 @@ public class IdeaController {
     public List<Idea> getAllIdeas() {
         return ideaService.getAllIdeas();
     }
-
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<String, Object>> getStatistics() {
+        return ResponseEntity.ok(ideaService.getIdeaStatistics());
+    }
     @GetMapping("/{id}")
     public Idea getIdeaById(@PathVariable Long id) {
         return ideaService.getIdeaById(id);
@@ -128,6 +131,9 @@ public class IdeaController {
         }
         return ResponseEntity.ok(updatedIdea);
     }
+
+
+
 
 
 

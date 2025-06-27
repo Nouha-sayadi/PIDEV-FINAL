@@ -18,7 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -132,9 +134,43 @@ public class IdeaService {
         if (!optionalIdea.isPresent()) return null;
 
         Idea idea = optionalIdea.get();
-
-
         idea.setStatus(newStatus);
-        return ideaRepository.save(idea);
+        Idea updatedIdea = ideaRepository.save(idea);
+
+        // Envoi d'email seulement si status est ACCEPTED ou REJECTED
+        if (newStatus == IdeaStatus.ACCEPTED || newStatus == IdeaStatus.REJECTED) {
+            String statusText = (newStatus == IdeaStatus.ACCEPTED) ? "acceptée" : "rejetée";
+
+            String subject = "Notification - Statut de votre idée";
+            String body = String.format(
+                    "Bonjour,\n\nNous souhaitons vous informer que votre idée intitulée : \"%s\" a été %s par notre équipe.\n\nMerci pour votre contribution.\n\nCordialement,\nL'équipe ProjectIdea.",
+                    idea.getTitle(), statusText
+            );
+
+            emailService.sendSimpleEmail(idea.getAuthor().getEmail(), subject, body);
+        }
+
+        return updatedIdea;
     }
+
+    public Map<String, Object> getIdeaStatistics() {
+        List<Idea> ideas = ideaRepository.findAll();
+        long totalIdeas = ideas.size();
+        long totalLikes = ideas.stream().mapToLong(Idea::getLikes).sum();
+
+        long acceptedCount = ideas.stream().filter(i -> i.getStatus() == IdeaStatus.ACCEPTED).count();
+        long rejectedCount = ideas.stream().filter(i -> i.getStatus() == IdeaStatus.REJECTED).count();
+        long proposedCount = ideas.stream().filter(i -> i.getStatus() == IdeaStatus.PROPOSED).count();
+
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalIdeas", totalIdeas);
+        stats.put("totalLikes", totalLikes);
+        stats.put("acceptedCount", acceptedCount);
+        stats.put("rejectedCount", rejectedCount);
+        stats.put("proposedCount", proposedCount);
+
+        return stats;
+    }
+
+
 }

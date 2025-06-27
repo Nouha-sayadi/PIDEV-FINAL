@@ -20,11 +20,12 @@
           <li><a routerLink="/courses" routerLinkActive="active" href="courses.html">Courses</a></li>
           <li><a routerLink="/Trainers" routerLinkActive="active" href="trainers.html">Trainers</a></li>
           <li><a routerLink="/Events" routerLinkActive="active" href="events.html">Events</a></li>
-          <!--<li><a routerLink="/payment-plans" routerLinkActive="active" >Payment Plan</a></li>-->
-
+          
             
           
-          <li><a routerLink="/Contact" routerLinkActive="active" href="contact.html">Contact</a></li>
+           <button class="btn-getstarted" (click)="onLogout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

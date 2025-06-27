@@ -24,6 +24,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TokenInterceptor } from './services/token.service';
 import { DiscussionComponent } from './components/discussion/discussion.component';
+import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.component';
+import { AdminStatisticsComponent } from './components/admin-statistics/admin-statistics.component';
 
 
 
@@ -49,7 +51,9 @@ import { DiscussionComponent } from './components/discussion/discussion.componen
     IdeaDetailsAdminComponent,
     LoginComponent,
     RegisterComponent,
-    DiscussionComponent
+    DiscussionComponent,
+    AdminSidebarComponent,
+    AdminStatisticsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,25 +1,38 @@
-<div class="container mt-4" *ngIf="idea; else errorTpl">
-  <h2>Détails de l'idée</h2>
-  <p><strong>Titre :</strong> {{ idea.title }}</p>
-  <p><strong>Statut :</strong> {{ idea.status }}</p>
-  <p><strong>Date de soumission :</strong> {{ idea.submissionDate | date:'medium' }}</p>
-  <p><strong>Likes :</strong> {{ idea.likes }}</p>
+<div class="d-flex">
 
-  <p *ngIf="idea.videoUrl">
-    <strong>Vidéo :</strong>
-    <a [href]="idea.videoUrl" target="_blank">Voir la vidéo</a>
-  </p>
+  <!-- Sidebar -->
+  <app-admin-sidebar></app-admin-sidebar>
 
-  <p *ngIf="idea.reportFileName">
-    <strong>Rapport :</strong>
-    <button class="btn btn-outline-primary btn-sm" (click)="downloadReport()">Télécharger le rapport</button>
-  </p>
+  <!-- Contenu principal -->
+  <div class="main-content flex-grow-1 container mt-4" *ngIf="idea; else errorTpl">
+    <h2>Détails de l'idée</h2>
+    <p><strong>Titre :</strong> {{ idea.title }}</p>
+    <p><strong>Statut :</strong> {{ idea.status }}</p>
+    <p><strong>Date de soumission :</strong> {{ idea.submissionDate | date:'medium' }}</p>
+    <p><strong>Likes :</strong> {{ idea.likes }}</p>
 
-  <a class="btn btn-secondary mt-3" routerLink="/admin/ideas">Retour</a>
+    <p *ngIf="idea.videoUrl">
+      <strong>Vidéo :</strong>
+      <a [href]="idea.videoUrl" target="_blank">Voir la vidéo</a>
+    </p>
+
+    <p *ngIf="idea.reportFileName">
+      <strong>Rapport :</strong>
+      <button class="btn btn-outline-primary btn-sm" (click)="downloadReport()">Télécharger le rapport</button>
+    </p>
+
+    <a class="btn btn-secondary mt-3" routerLink="/admin/view">Retour</a>
+  </div>
+
 </div>
 
+<!-- Template en cas d'erreur -->
 <ng-template #errorTpl>
-  <div class="alert alert-danger mt-4">{{ errorMessage }}</div>
-  <a class="btn btn-secondary mt-3" routerLink="/admin/ideas">Retour</a>
+  <div class="d-flex">
+    <app-admin-sidebar></app-admin-sidebar>
+    <div class="main-content flex-grow-1 container mt-4">
+      <div class="alert alert-danger mt-4">{{ errorMessage }}</div>
+      <a class="btn btn-secondary mt-3" routerLink="/IdeaListAdmin">Retour</a>
+    </div>
+  </div>
 </ng-template>
-
